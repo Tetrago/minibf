@@ -1,4 +1,4 @@
-        xor r14, r14
+        xor r14d, r14d
         mov rdi, [rsp + 0x10]
         mov rax, 2
         xor esi, esi
