@@ -34,20 +34,19 @@ start:  mov al, [r13]
         jz .skip
         push r14
         jmp loop
-.skip:  mov rcx, 1
-.sloop: call next
-        lea rdx, [rcx + 1]
+.skip:  xor r15d, r15d
+.inc:   inc r15
+.loop:  call next
         cmp al, '['
-        cmove rcx, rdx
-        je .sloop
-        loop .sloop
+        je .inc
+        cmp al, ']'
+        jne .loop
+        dec r15
+        jnz .loop
         jmp loop
-end:    pop rsi
-        mov al, [r13]
-        test al, al
-        jz loop
-        dec rsi
-        mov r14, rsi
+end:    pop r14
+        dec r14
+        mov rsi, r14
         mov rax, 8
         mov rdi, r12
         xor edx, edx
