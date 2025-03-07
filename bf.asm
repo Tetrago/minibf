@@ -1,15 +1,4 @@
-        global  _start
-next:   inc r14
-        xor eax, eax
-        mov rdi, r12
-        lea rsi, [rsp - 1]
-        mov rdx, 1
-        syscall
-        mov dl, [rsp - 1]
-        test rax, rax
-        cmovnz rax, rdx
-        ret
-_start: xor r14, r14
+        xor r14, r14
         mov rdi, [rsp + 0x10]
         mov rax, 2
         xor esi, esi
@@ -24,6 +13,16 @@ _start: xor r14, r14
         rep stosq
 loop:   call next
         jmp [data + rax * 8]
+next:   inc r14
+        xor eax, eax
+        mov rdi, r12
+        lea rsi, [rsp - 1]
+        mov rdx, 1
+        syscall
+        mov dl, [rsp - 1]
+        test rax, rax
+        cmovnz rax, rdx
+        ret
 id:     sub rax, 44
         sub [r13], al
         jmp loop
