@@ -47,7 +47,6 @@ end:    pop rsi
         mov al, [r13]
         test al, al
         jz loop
-        push rsi
         dec rsi
         mov r14, rsi
         mov rax, 8
