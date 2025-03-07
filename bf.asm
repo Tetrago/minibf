@@ -17,11 +17,10 @@ next:   inc r14
         xor eax, eax
         mov rdi, r12
         lea rsi, [rsp - 1]
+        mov byte [rsi], 0
         mov rdx, 1
         syscall
-        mov dl, [rsp - 1]
-        test al, al
-        cmovnz eax, edx
+        movzx eax, byte [rsp - 1]
         ret
 id:     sub rax, 44
         sub [r13], al
