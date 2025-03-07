@@ -1,4 +1,4 @@
-        lea r13, [data + 4096]
+        lea r13, [data + 6144]
         xor r14, r14
         mov rdi, [rsp + 0x10]
         mov rax, 2
@@ -28,12 +28,11 @@ start:  mov al, [r13]
         jz .skip
         push r14
         jmp loop
-.skip:  xor r15, r15
-inc:    inc r15
+.skip:  mov r15, 1
 sloop:  call next
+        add r15, [data + 4096 + rax * 8]
         jmp [data + 2048 + rax * 8]
-dec:    dec r15
-        jnz sloop
+dec:    jnz sloop
         jmp loop
 end:    pop r14
         dec r14
@@ -53,4 +52,4 @@ exit:   mov rax, 60
 sysjmp: syscall
         jmp loop
         section .data
-data:   dq exit, 42 dup(loop), id, io, id, io, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 162 dup(loop), exit, 90 dup(sloop), inc, sloop, dec, 162 dup(sloop), 0x40 dup(0)
+data:   dq exit, 42 dup(loop), id, io, id, io, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 162 dup(loop), exit, 92 dup(sloop), dec, 162 dup(sloop), 91 dup(0), 1, 0, -1, 162 dup(0), 0x40 dup(0)
