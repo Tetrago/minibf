@@ -24,7 +24,7 @@ _start: xor r14, r14
         rep stosq
 loop:   call next
         jmp [data + rax * 8]
-id:     sub al, 44
+id:     sub rax, 44
         sub [r13], al
         jmp loop
 lr:     sub rax, 61
