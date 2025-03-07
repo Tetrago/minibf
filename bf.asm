@@ -1,6 +1,6 @@
         global  _start
 next:   inc r14
-        xor rax, rax
+        xor eax, eax
         mov rdi, r12
         lea rsi, [rsp - 1]
         mov rdx, 1
@@ -12,14 +12,14 @@ next:   inc r14
 _start: xor r14, r14
         mov rdi, [rsp + 0x10]
         mov rax, 2
-        xor rsi, rsi
-        xor rdx, rdx
+        xor esi, esi
+        xor edx, edx
         syscall
         mov r12, rax
         sub rsp, 0x200
         mov r13, rsp
         mov rcx, 0x200 / 8
-        xor rax, rax
+        xor eax, eax
         mov rdi, rsp
         rep stosq
 loop:   call next
@@ -51,7 +51,7 @@ end:    pop rsi
         mov r14, rsi
         mov rax, 8
         mov rdi, r12
-        xor rdx, rdx
+        xor edx, edx
         syscall
         jmp loop
 out:    mov rsi, r13
@@ -69,6 +69,6 @@ in:     sub rax, 44
         movsb
         jmp loop
 exit:   mov rax, 60
-        xor rdi, rdi
+        xor edi, edi
         syscall
 data:   dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 34 dup(loop)
