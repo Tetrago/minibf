@@ -1,13 +1,13 @@
-        xor r14d, r14d
+        xor r14, r14
         mov rdi, [rsp + 0x10]
         mov rax, 2
         xor esi, esi
         xor edx, edx
         syscall
         mov r12, rax
-        mov r13, tape
+        lea r13, [data + 4096]
 loop:   call next
-        jmp [table + rax * 8]
+        jmp [data + rax * 8]
 next:   inc r14
         xor eax, eax
         mov rdi, r12
@@ -28,10 +28,10 @@ start:  mov al, [r13]
         jz .skip
         push r14
         jmp loop
-.skip:  xor r15d, r15d
+.skip:  xor r15, r15
 inc:    inc r15
 sloop:  call next
-        jmp [skip + rax * 8]
+        jmp [data + 2048 + rax * 8]
 dec:    dec r15
         jnz sloop
         jmp loop
@@ -60,7 +60,5 @@ in:     sub rax, 44
 exit:   mov rax, 60
         xor edi, edi
         syscall
-table:  dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 34 dup(loop)
-skip:   dq 91 dup(sloop), inc, sloop, dec, 34 dup(sloop)
-        section .bss
-tape:   resb 0x200
+        section .data
+data:   dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 162 dup(loop), exit, 90 dup(sloop), inc, sloop, dec, 162 dup(sloop), 0x40 dup(0)
