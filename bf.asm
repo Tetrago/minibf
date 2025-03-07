@@ -24,15 +24,13 @@ _start: xor r14, r14
         rep stosq
 loop:   call next
         jmp [data + rax * 8]
-id:     mov rdx, r13
-        sub rax, 44
-        sub [rdx], al
+id:     sub al, 44
+        sub [r13], al
         jmp loop
 lr:     sub rax, 61
         add r13, rax
         jmp loop
-start:  mov rax, r13
-        mov al, [rax]
+start:  mov al, [r13]
         test al, al
         jz .skip
         push r14
@@ -46,8 +44,7 @@ start:  mov rax, r13
         loop .sloop
         jmp loop
 end:    pop rsi
-        mov rax, r13
-        mov al, [rax]
+        mov al, [r13]
         test al, al
         jz loop
         push rsi
