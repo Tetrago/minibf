@@ -5,12 +5,7 @@
         xor edx, edx
         syscall
         mov r12, rax
-        sub rsp, 0x200
-        mov r13, rsp
-        mov rcx, 0x200 / 8
-        xor eax, eax
-        mov rdi, rsp
-        rep stosq
+        mov r13, tape
 loop:   call next
         jmp [table + rax * 8]
 next:   inc r14
@@ -67,3 +62,5 @@ exit:   mov rax, 60
         syscall
 table:  dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 34 dup(loop)
 skip:   dq 91 dup(sloop), inc, sloop, dec, 34 dup(sloop)
+        section .bss
+tape:   resb 0x200
