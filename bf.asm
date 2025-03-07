@@ -12,7 +12,7 @@
         mov rdi, rsp
         rep stosq
 loop:   call next
-        jmp [data + rax * 8]
+        jmp [table + rax * 8]
 next:   inc r14
         xor eax, eax
         mov rdi, r12
@@ -20,8 +20,8 @@ next:   inc r14
         mov rdx, 1
         syscall
         mov dl, [rsp - 1]
-        test rax, rax
-        cmovnz rax, rdx
+        test al, al
+        cmovnz eax, edx
         ret
 id:     sub rax, 44
         sub [r13], al
@@ -35,14 +35,11 @@ start:  mov al, [r13]
         push r14
         jmp loop
 .skip:  xor r15d, r15d
-.inc:   inc r15
-.loop:  call next
-        cmp al, '['
-        je .inc
-        cmp al, ']'
-        jne .loop
-        dec r15
-        jnz .loop
+inc:    inc r15
+sloop:  call next
+        jmp [skip + rax * 8]
+dec:    dec r15
+        jnz sloop
         jmp loop
 end:    pop r14
         dec r14
@@ -69,4 +66,5 @@ in:     sub rax, 44
 exit:   mov rax, 60
         xor edi, edi
         syscall
-data:   dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 34 dup(loop)
+table:  dq exit, 42 dup(loop), id, in, id, out, 13 dup(loop), lr, loop, lr, 28 dup(loop), start, loop, end, 34 dup(loop)
+skip:   dq 91 dup(sloop), inc, sloop, dec, 34 dup(sloop)
